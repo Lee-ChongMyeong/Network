@@ -1,0 +1,144 @@
+192.168.2.0/24
+0 ~ 255 : 256
+256 / 4 = 64
+
+192.168.2.0 : 사용안함
+192.168.2.64 : HQ <> LAN
+192.168.2.128 : HQ <> Campus
+192.168.2.192 : Campus <> LAN
+256 - 64 = 192
+
+HQ 라우터
+f0/0 : 192.168.2.65
+s0/0 : 192.168.2.130
+
+Campus라우터 
+s0/0 : 192.168.2.129
+f0/0 : 192.168.2.193
+
+PC1 : 192.168.2.254
+PC2 : 192.168.2.126
+======================
+HQ
+
+enable
+conf t
+hostname HQ
+no ip domain-lookup
+enable secret cisco
+!
+line con 0
+ logg syn
+ exec 0 0 
+ exit
+!
+line vty 0 4 
+ no login
+ exit
+!
+int s0/0
+ bandwidth 64
+ encapsulation hdlc
+ clock rate 64000
+  ip add 192.168.2.130 255.255.255.192
+ no shutdown
+ exit
+!
+int s0/1
+ bandwidth 64
+ encapsulation hdlc
+ clock rate 64000
+ ip address 209.165.201.2 255.255.255.252
+ no shutdown
+ exit
+!
+int f0/0
+ ip add 192.168.2.65 255.255.255.192 
+ no shutdown
+ exit
+!
+ip route 192.168.2.192 255.255.255.192 192.168.2.129
+ip route 209.165.200.224 255.255.255.224 209.165.201.1
+exit
+!
+copy r s
+
+
+!
+======================
+Campus
+
+enable
+conf t
+hostname Campus
+no ip domain-lookup
+enable secret cisco
+!
+line con 0
+ logg syn
+ exec 0 0 
+ exit
+!
+line vty 0 4 
+ no login
+ exit
+!
+int s0/0
+ band 64
+ clock rate 64000
+ encap hdlc
+ ip add 192.168.2.129 255.255.255.192 
+ no shutdown
+ exit
+!
+int f0/0
+ ip add 192.168.2.193 255.255.255.192
+ no shutdown
+ exit
+!
+ip route 0.0.0.0 0.0.0.0 192.168.2.130
+exit
+!
+copy r s
+
+
+!
+======================
+ISP
+
+enable
+conf t
+hostname ISP
+no ip domain-lookup
+enable secret cisco
+!
+line con 0
+ logg syn
+ exec 0 0 
+ exit
+!
+line vty 0 4 
+ no login
+ exit
+!
+int s0/1
+ band 64
+ clock rate 64000
+ encap hdlc
+ ip add 209.165.201.1 255.255.255.252 
+ no shutdown
+ exit
+!
+int f0/0
+ ip add 209.165.200.225 255.255.255.224
+ no shutdown
+ exit
+!
+ip route 0.0.0.0 0.0.0.0 209.165.201.2
+exit
+!
+copy r  s
+
+
+
+!

@@ -1,0 +1,143 @@
+★CDP (Cisco Discovery Protocol)
+-2계층 까지 연결을 확인하는 용도로 활용
+
+CDP가 포함하는 정보
+Hostname
+Address 정보
+port 정보
+
+---------------------------------------------------------------------------
+router A# show cdp neighbor : CDP 상태 정보 검증
+
+*device ID : 물리적으로 연결되어 있는 정보 확인
+*Local Intrfrce : 나의 상대방과 연결된 인터페이스 (나)
+*Port ID : 상대방이 연결된 장비의 인터페이스 정보 (상대방)
+*Holdtme  : CDP 60초에 한번씩 정보 교환. 180초를 기준으로 보관
+cdp 정보를 유지하는 최대 시간
+*Platform : 라우터 기종
+
+router A# show cdp neighbor detail
+========================================
+★ Router Telnet ★
+-> 원격 연결 -> password 요구 (보안때문에)
+
+*Virtual Terminal COnfiguration
+
+config terminal
+line vty 0 4
+password cisco
+login
+:Ram 에 정보 저장
+Ram 정보 확인 : show running-config
+
+*Local User DB
+config terminal
+username admin password cisco
+line vty 0 4
+login local
+
+*암호 입력 없이 
+show running-config
+line vty 0 4
+no login
+end
+password cisco
+no login
+
+
+Router의 부팅과정 소개
+R1# show flash:
+
+Configuration Register : 
+===================================
+★NVRAM
+R1#show startup-config : NVRAM 확인
+#copy running-config startup-config : Ram의 정보를 NVRAM 으로 복사
+->
+#show startup-config
+
+-> 전원 껐다가 켜기  
+
+=====================================
+*Register 값을 이용한 password 복구 작업
+-> 전원 껐다가 킬 떄 ctrl + c -> Rommon : Rom monitor(부팅 순서정도를 바꾼다)
+-> ? 입력 -> confreg 0x2142 -> reset -> 초기화된것처럼 보임
+-> show startup-config : 정보 확인
+
+원래 show version : 운영체제 및 버전 정보를 확인할수 있음
+-> Configuration register is 0x2102 : 표준모드로 부팅할떄 쓰는 값이야
+
+configure terminal
+config-register 0x2102 -> 원래 값으로 넣기
+-> show version
+
+-> #reload 명령어 입력
+
+===========================================
+
+IOS Image 관리 (flash)
+
+C2500-js-l-121.3.bin
+2500Router/ Feature Set / File Format / version and release 
+(upgrade) / Binary format
+
+*실습 
+-Ram 의 정보를 서버에 백업 -> 다시 정보 가지고 올떄는 NVRAM
+
+configure terminal
+interface fastEthernet 0/0
+ip address 1.1.1.1 255.255.255.0
+no shutdown
+
+server클릭
+IP configurataion ->IP 및 서브넷 입력
+
+백업
+#copy running-config tftp:
+서버 IP 입력 1.1.1.2
+TEST.cfg
+
+
+서버 클릭 -> SERVICES -> TFTP -> TEST.cfg 있는지 확인하기
+
+#copy tftp: startup-config
+ip : 1.1.1.2
+source filename ? TEST.cfg
+enter
+
+*결과*
+show running-config
+show startup-config 
+가 같은지 확인하기 
+==========================
+운영체제 확인 
+# show flash:
+
+c2600-i-mz.122-28.bin
+
+*기존 운영체제 백업
+#copy flash: tftp: 
+c2600-i-mz.122-28.bin 붙여넣기
+1.1.1.2
+enter
+
+server클릭 -> service -> TFTP -> c2600-i-mz.122-28.bin 있는지 확인
+
+최신 업데이트 된거 확인
+
+#copy tftp: flash: 
+1.1.1.2
+source file name ? c2600-advipservicesk9-mz.124-15.T1.bin
+enter
+
+#show flash: -> 최신정보의 운영체제가 있는지 확인하기
+#show version: ->: 동작하고 있는 운영체제 확인
+
+프로그램 설치후 재부팅
+#reload 
+
+#show version -> 동작중인 운영체제 최신버전으로 되어있는지 확인.
+
+delete flash: 운영체제 이름 입력  
+
+*clock 1k = 1000

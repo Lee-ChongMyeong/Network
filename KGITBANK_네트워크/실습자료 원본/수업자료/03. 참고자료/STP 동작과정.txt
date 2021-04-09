@@ -1,0 +1,10 @@
+STP 동작과정 
+1. ROOT 설정
+=> Lowest Bridge ID (Bridge Priority + MAC Address)
+2. Non Root Bridge에서 Root로 향하는 최적 경로 포트를 결정(Root Port)
+	* 포트 결정 우선순위
+	1. COST ID
+	2. Sender Bridge ID
+	3. Port ID 
+3. 콜리전도메인당 하나의 지정포트를 결정(Designated Port)
+4. Nondesignated Port는 블럭처리되어 사용하지 않음

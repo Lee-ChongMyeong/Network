@@ -1,0 +1,11 @@
+리눅스	-> 2문제	(옵션 출제 안됨)
+
+ps
+top
+pstree
+df
+traceroute
+
+man 	= 도움말
+more	= 페이지 단위
+

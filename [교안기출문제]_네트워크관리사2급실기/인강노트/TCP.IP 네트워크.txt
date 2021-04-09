@@ -1,0 +1,89 @@
+TCP = 신뢰성
+UDP = 실시간 전송, 빠른속도 
+
+ARP : IP -> MAC
+
+Page 27 매우 중요!! ==> 시험 잘 출제 됨.
+
+1계층) Repeater : 신호 증폭기
+2계층) Bridge	== switch 
+3계층) Router
+
+Page 28 ==> 암기하기  (TCP사용하는 애들, UDP 사용하는 애들 구별) ===> 출제
+
+=======================================================
+
+Page33
+
+A Class : 0 ~ 127 
+사설 : 10.x.x.x / 8
+
+B Class : 128 ~ 191 
+사설 : 172.16.x.x ~ 172.31.x.x / 16
+
+C Class : 192 ~ 223 
+사설 : 192.168.0.x ~ 192.168.255.x /24
+
+D Class : 224 ~ 239
+
+E Class : 240 ~ 255
+
+page 39
+
+IPv4
+1. 유니캐스트 (Unicast) (A Class, B Class ,C Class)
+
+2. 멀티캐스트 	(D Class)
+ ==> 원하는 호스트 만
+
+3. 브로드캐스트 (Broadcast)
+ ==> 특정 대상 x , 모든 호스트 대상
+
+
+
+=====================================================
+
+3. Subnetting 개념과 VLSM, CIDR	=> 시험출제 빈도 낮음.
+
+CIDR = 클래스를 없애고, 주소를 재할당 하는 개념.
+
+page 6
+
+추가 Gateway => 고급탭
+
+======================================================
+
+4. IPv6 Address 개요 => 1문제 정도 나옴.
+
+page63
+
+IPv6 unicast addresses :
+
+-Global unicast address == IPv4 공인 IP
+			2 ~ 
+			3 ~ 으로 시작
+
+-Link-local address == 169.254.x.x (==DHCP), FE80: ~ 으로 시작.
+
+-Site-local address == 사설 IP
+
+
+*단답형 - 듀얼스택 (Dual Stack)
+ ==> IPv4, IPv6 동시에 탑재. 동시에 돌아감.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

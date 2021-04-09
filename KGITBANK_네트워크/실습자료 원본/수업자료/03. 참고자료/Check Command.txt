@@ -1,0 +1,37 @@
+show controller interface ===> DCE/DET 구별 확인
+show ip interface brief ====> 2계층 물리적 연결 확인!!
+show ip route ====> 라우팅 테이블 확인!!
+show ip protocols ===>자신의 라우터의 프로토콜 확인!!
+show ip interface === > 해당인터페이스에 설정된 정보확인!!
+show interface (해당 인터페이스) ==> 인터페이스정보
+show running config ==> RAM에 설정된 config확인
+show version ==== > 라우터의 하드/소프트웨어정보 확인
+show startup-config ==>NVRAM에 설정된 config확인
+copy running config startup-config  ==>RAM에 정보를 NVRAM으로 저장
+erase startup-config  ==>NVRAM에 설정된 config 삭제
+clear ip route * ===> 라우팅 테이블의 라우트 정보 삭제
+show cdp neighbor ==>이웃장비 정보 확인 (2계층 이상동작해야만 작동 시스코 전용)
+show cdp neighbor detail ==>이웃장비 상세 정보
+
+
+<rip>
+show ip route rip ===>라우팅 테이블중 RIP정보만 확인
+debug ip rip ====>RIP 데이터 정보 확인!!
+<EIGRP>
+show ip eigrp neighbor ==>네이버 테이블 확인(Hello)
+show ip eigrp topology ==>라우트 경로집합 (Update)
+show ip route eigrp
+show ip protocols
+show ip eigrp traffic <AS number)
+show ip eigrp events
+debug eigrp packet <access-list number>
+debug eigrp neighbor
+debug ip eigrp route
+debug ip eigrp summary
+<OSPF>
+show ip ospf neighbor
+show ip route ospf
+show ip ospf database ====>라우트 경로집합 (DBD)
+debug ip ospf adv ==> 링크 상태 정보 확인
+debug ip ospf =====> 라우트 정보 확인
+

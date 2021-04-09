@@ -1,0 +1,41 @@
+#Static Routing 02 실습
+
+Gateway : 라우터의 ip 번호를 적으면 됨
+
+(config) #do sh ip ro
+
+PC1 
+command prompt 
+ping 192.168.30.1 -> 테이블 주소가 없어서 안됨
+configure terminal
+ip route 
+192.168.30.0 255.255.255.0 172.16.1.2 -> static
+
+configure terminal
+ip route 192.168.39.9 255.255.255.0 serial 0/1
+
+C->connected
+S->static
+
+실습
+
+R11 -> PC2 (route 0)
+ip route 172.16.1.0 255.255.255.0 172.16.2.2 
+	(목적지 주소)	
+
+#show ip route =>라우팅 테이블 보기
+#do show ip route 
+
+R11 (route1)
+configure terminal
+ip route 192.168.1.0 255.255.255.0 172.16.2.2
+
+
+	
+
+
+
+
+
+
+

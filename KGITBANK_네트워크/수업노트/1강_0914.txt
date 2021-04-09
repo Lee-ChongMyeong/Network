@@ -1,0 +1,38 @@
+www.ktword.co.kr
+-> 정보통신 기술용어해설 사전으로 온라인에서 제공하는 기술용어 사전 중 최고
+
+www.datanet.co.kr
+-> network times 라는 오프라인 잡지 발간회사에서 운영
+
+www.itworld.co.kr
+-> 최신 기술에 대한 간단한 설명을 "테크라이브러리" 메뉴를 통해서 PDF 다운 받을 수 있음
+
+www.terms.co.kr
+-> IT 용어사전
+
+www.netmanias.com
+-> 컨설팅 회사 사이트로 IT관련 기술에 대한 전문적인 내용을 아주 쉽게 체계적으로 문서를 작성하여 PDF파일로 배포
+
+Network?
+송수신기능이 탑재되어 있는 디바이스 2개 이상이 매체를 통해 연결되어 있는 형태
+송수신이란? 데이터를 주고 받는 기능
+NIC =  Network Interface Card (=Lan Card)
+	         -> ~사이다 
+
+Network
+장점 ->공유 (정보, 자원)
+단점 -> 정보의 조작 변조 가능성(신뢰성)
+
+Network의 종류
+1) 서비스 영역 (서비스 제공자)
+* LAN(Local Area Network) = network
+- gateway를 기준으로 내 외부를 나눌수 있다. 
+- 인트라넷이라도 Lan 과 Wan 으로 나눌 수 있다. 인트라넷을 인터넷과 비교하면 인트라넷은 Lan, 인터넷은 Wan
+* WAN(Wide Area Network) 
+
+*area = domain, subnet, as, network
+
+2) 서비스 형태 (서비스 요청자) 
+- Server & Client(웹사이트 형태) - 서비스를 주는것과 받는것이 고정되어 있는 형태.  ex) naver
+- Peer To Peer (OO공유 사이트) - 내가 서비스를 줄 수도 있고 내가 서비스를 받을 수 있는 형태 
+

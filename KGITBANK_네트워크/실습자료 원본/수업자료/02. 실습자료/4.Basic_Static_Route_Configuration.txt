@@ -1,0 +1,131 @@
+R11
+
+enable
+configure terminal
+hostname R11
+enable secret cisco
+no ip domain-lookup
+!
+line console 0
+ exec-timeout 0 0
+ logging synchronous 
+ exit
+!
+line vty 0 4
+ logg sync
+ no login
+ exit
+!
+interface fastethernet 0/0
+ ip address 172.16.3.1 255.255.255.0
+ no shutdown
+ exit
+!
+interface serial 0/0
+ bandwidth  1024
+ encapsulation hdlc
+ ip address 172.16.2.1 255.255.255.0
+ no shutdown
+ exit
+!
+ip route 172.16.1.0 255.255.255.0 172.16.2.2
+ip route 192.168.2.0 255.255.255.0 172.16.2.2
+ip route 192.168.1.0 255.255.255.0 172.16.2.2
+exit
+!
+copy run start
+
+
+
+!
+
+=====================
+R12
+
+enable
+configure terminal
+hostname R12
+enable secret cisco
+no ip domain-lookup
+!
+line console 0
+ exec-timeout 0 0
+ logging synchronous 
+ exit
+!
+line vty 0 4
+ logg sync
+ no login
+ exit
+!
+interface fastethernet 0/0
+ ip address 172.16.1.1 255.255.255.0
+ no shutdown
+ exit
+!
+interface serial 0/0
+ bandwidth 1024
+ clock rate 1000000
+ encapsulation hdlc
+ ip address 172.16.2.2 255.255.255.0
+ no shutdown
+ exit
+!
+interface serial 0/1
+ bandwidth 1024
+ clock rate 1000000
+ encapsulation hdlc
+ ip address 192.168.1.2 255.255.255.0
+ no shutdown
+ exit
+!
+ip route 172.16.3.0 255.255.255.0 172.16.2.1
+ip route 192.168.2.0 255.255.255.0 192.168.1.1
+exit
+!
+copy r s
+
+
+!
+=====================
+R13
+
+
+enable
+configure terminal
+hostname R13
+enable secret cisco
+no ip domain-lookup
+!
+line console 0
+ exec-timeout 0 0
+ logging synchronous  
+ exit
+!
+line vty 0 4
+ logg sync
+ no login
+ exit
+!
+interface fastethernet 0/0
+ ip address 192.168.2.1 255.255.255.0
+ no shutdown
+ exit
+!
+interface serial 0/1
+ bandwidth 1024
+ encapsulation hdlc
+ ip address 192.168.1.1 255.255.255.0
+ no shutdown
+ exit
+!
+ip route 172.16.1.0 255.255.255.0 192.168.1.2
+ip route 172.16.2.0 255.255.255.0 192.168.1.2
+ip route 172.16.3.0 255.255.255.0 192.168.1.2
+exit
+!
+copy r s
+
+
+
+!

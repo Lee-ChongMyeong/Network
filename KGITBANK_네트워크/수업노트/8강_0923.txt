@@ -1,0 +1,64 @@
+*실습간 interface 값이 틀릴 경우.
+-> 인터페이스 shut down (닫고)
+-> IP나 bandwidth 새로운 값을 입력하고
+-> 모든 설정이 정상이면 no shut down 으로 하기.
+
+*Virtual Terminal (telnet) 설정하기
+
+line vty 0 4
+password cisco
+login 
+
+원격접속 할 떄 : telnet (보안이 없음)
+원격 접속 + 보안 : telnet (SSH)
+
+----------------------------------------
+*실습
+-라우터와 라우터 연결하기 위해서 
+WIC-2T, WIC-1T 넣기. 
+
+-케이블 연결
+어느쪽이 DCE? -> 상관하지 않겠다.-> 클럭을 제공해주는 쪽 dce
+한쪽 장비에 DCE 몰아주는 게 일반적임
+
+R1 - R2
+interface serial 0/0
+encapsulation ppp
+ip address 10.1.12.1 255.255.255.0
+bandwidth 64
+clock rate 64000
+no shutdown
+
+R1- R3
+interface serial 0/1
+encapsulation ppp
+ip address 10.1.13.65 255.255.255.192
+bandwidth 2048
+clock rate 200000
+no shut down
+ba
+--------------------------------R1 설정 끝
+
+R2-R1 
+(DTE : Clock rate 필요없음)
+
+---------------------------------
+
+R1
+(config) username Admin password Password (관리자 계정)
+line vty 0 4
+login local
+
+R2
+(config) username Router password Cisco)
+line vty 0 4
+login local
+
+...
+
+실습 숙제
+23.23.12.1 / 24
+(날짜), (R1~R2) 
+
+*실습 자료 
+1. Cable_Basic -> straight 으로 연결 해야됨.

@@ -1,0 +1,137 @@
+라우터 == 2문제 정도 출제
+
+★중요
+
+# show version
+# show running-config 	=RAM
+# show startup-config	=NVRAM
+
+copy r s == 저장
+# show flash
+
+page 83 
+네트워크 관리사에서는 Telnet 설정만 나옴. ssh는 아직 안나옴
+
+page 84 
+# login		==> Password 설정 필요.
+# login local **	==> 사용자 계정 정보가 있어야 됨.
+
+page 86 => 무조건 출제!
+
+FastEthernet 0/0	(LAN)
+IP/ Subnet 만 설정하면 됨. 나머지는 Auto
+
+Serial 0/0/0	(WAN)
+=> 다양한 프로토콜. IP/SUBNET, 속도 등 .. 설정
+=> 프로토콜 : default : HDLC / PPP ,F/R, X25 등... 
+
+page 88
+라워에 두번째 ip 추가	=> secondary ~~ 
+
+page 89
+bandwidth 
+1Mbps	-> 1024kbps
+Router(conter-if) description 	=> 부연설명	(필수적으로 주는것임)
+			=> 시험 문제 자주 나옴
+
+======================================================
+
+2. Routing Table	=> 시험 잘 나오지 않음. 
+		=> Dynamic Routing x	
+		=> Static Routing(수동) 빈도 높음
+
+page 100
+0.0.0.0 /0 -> 모든 IP
+Router B 설정	= 모든 IP는 172.16.2.2 로 가세요.
+
+
+page101
+Dynamic Routing	=> RIP 만 나옴.
+
+page 102
+
+T1 = 1544kbps, 실제로는 2hop 으로 가는게 빠르지만, RIP 에서는 1hop 으로 감.
+
+page 104
+
+-Network Number는 반드시 Major Classful Network Number로 설정한다.
+
+A : 1 ~ 126	8bit	(1자리)
+B : 128 ~ 191	16bit	(2자리)
+C : 192 ~ 223	24bit	(3자리)
+
+★★ Default Network 설정	=> 시험 많이 나옴.
+
+# show ip protocols	=> 검증
+
+Distance (번호가 낮을수록 좋은것임)
+Static	-> 1
+EIGRP	-> 90
+OSPF	-> 110
+ISIS	-> 115
+RIP	-> 120
+
+# show ip route
+C : Connected
+R : RIP 으로 만든것
+
+# clear ip route * 	-> 동적 IP Protocol만 없어짐
+
+# debug ip rip	=> Rip 이 메세지를 교환하는 것을 화면에 출력.
+
+# passive-interface f0/0	: 라우터 없느곳에다 전달금지 (시험에는 안나옴)
+			== trafic 줄어듬
+
+=================================================
+
+3. 기타 라우터 (시험 자주 나오는 것)
+
+DHCP
+UDP	-67 : Server
+	-68 : Client
+
+Discover - 255.255.255.0 뿌림	(68 -> 67)
+	(Broadcast 하는것 중요!)
+
+#network 192.168.1.0 255.255.255.0	=> 192.168.1 로 되어있는 IP 할당
+
+- excluded-address : 제외주소 (나누어 주면 안되니깐)	== 200~254 제외.
+						== 1~199 사용
+
+
+====================================================
+
+1)
+
+마지막에 # no shutdown
+
+# copy r s 
+
+4) 
+# ip address 192.168.5.1 255.255.255.192
+# ip address 192.168.5.2 255.255.255.192 secondary
+# router r s 
+
+5) 
+# line vty 0 4
+# exec-timeout 3 30
+	(앞에가 '분' 뒤에가 '초') 
+
+6) 
+# line console 0
+# password ICQApw
+
+# cpy r s 
+
+7) 
+# show user
+# copy r s 
+
+8) 
+
+# hostname Network2
+# line console 0
+# password ICQAP@ss
+# login
+# end 
+# copy r s

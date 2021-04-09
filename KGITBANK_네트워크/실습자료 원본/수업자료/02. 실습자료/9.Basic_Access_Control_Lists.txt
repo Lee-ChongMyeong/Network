@@ -1,0 +1,231 @@
+PC1
+
+192.168.10.10
+255.255.255.0
+192.168.10.1
+
+PC2
+
+192.168.11.10
+255.255.255.0
+192.168.11.1
+
+PC3
+
+192.168.30.10
+255.255.255.0
+192.168.30.1
+
+WebServer
+
+192.168.20.254
+255.255.255.0
+192.168.20.1
+
+======================
+R1
+
+enable
+configure terminal
+!
+hostname R1
+no ip domain-lookup
+enable secret cisco
+!
+line console 0
+ logging synchronous
+ exec-timeout 0 0 
+ exit
+!
+line vty 0 4
+ no login
+!
+interface fastethernet 0/0
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+ exit
+!
+interface fastethernet 0/1
+ ip address 192.168.11.1 255.255.255.0
+ no shutdown 
+ exit
+!
+interface serial 0/0
+ encapsulation hdlc
+ bandwidth 1024
+ clock rate 1000000
+ ip address 10.1.1.1 255.255.255.252
+ no shutdown 
+ exit
+!
+router ospf 1
+ network 192.168.10.1 0.0.0.0 area 0
+ network 192.168.11.1 0.0.0.0 area 0
+ network 10.1.1.1 0.0.0.0 area 0
+ exit
+!
+access-list 101 deny ip 192.168.10.0 0.0.0.255 host 209.165.200.225
+access-list 101 permit ip any any
+!
+interface serial 0/0
+ ip access-group 101 out 
+ exit
+!
+exit
+copy running-config startup-config
+
+
+
+!
+======================
+R2
+
+enable
+configure terminal
+!
+hostname R2
+no ip domain-lookup
+enable secret cisco
+!
+line console 0
+ logging synchronous
+ exec-timeout 0 0 
+ exit
+!
+line vty 0 4
+ no login
+!
+interface fastethernet 0/0
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+ exit
+!
+interface serial 0/0
+ encapsulation hdlc
+ bandwidth 1024
+ clock rate 1000000
+ ip address 10.1.1.2 255.255.255.252 
+ no shutdown 
+ exit
+!
+interface serial 0/1
+ encapsulation hdlc
+ bandwidth 1024
+ clock rate 1000000
+ ip address 10.2.2.1 255.255.255.252
+ no shutdown 
+ exit
+!
+interface loopback 0
+ ip address 209.165.200.225 255.255.255.224
+ no shutdown 
+ exit
+!
+router ospf 1
+ network 192.168.20.1 0.0.0.0 area 0
+ network 10.1.1.2 0.0.0.0 area 0
+ network 10.2.2.1 0.0.0.0 area 0
+ network 209.165.200.225 0.0.0.0 area 0
+ exit
+!
+access-list 110 deny icmp host 192.168.10.10 host 192.168.20.254
+access-list 110 deny tcp host 192.168.11.10 host 192.168.20.254 eq www
+access-list 110 deny icmp host 192.168.30.10 host 192.168.20.254 
+access-list 110 deny tcp host 192.168.30.10 host 192.168.20.254 eq www
+access-list 110 permit ip any any
+!
+interface fastethernet 0/0
+ ip access-group 110 out 
+ exit
+!
+exit
+!
+copy running-config startup-config
+
+
+!
+======================
+R3
+
+enable
+configure terminal
+!
+hostname R3
+no ip domain-lookup
+enable secret cisco
+!
+line console 0
+ logging synchronous
+ exec-timeout 0 0 
+ exit
+!
+line vty 0 4
+ no login
+!
+interface fastethernet 0/0
+ ip address 192.168.30.1 255.255.255.0
+ no shutdown 
+ exit
+!
+interface serial 0/1 
+ encapsulation hdlc
+ bandwidth 1024
+ clock rate 1000000
+ ip address 10.2.2.2 255.255.255.252
+ no shutdown 
+ exit
+!
+router ospf 1
+ network 192.168.30.1 0.0.0.0 area 0
+ network 10.2.2.2 0.0.0.0 area 0 
+ exit
+!
+access-list 1 deny 192.168.11.0 0.0.0.255
+access-list 1 permit any
+!
+interface serial 0/1
+ ip access-group 1 in
+ exit
+!
+exit
+!
+copy running-config startup-config
+
+
+
+
+!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

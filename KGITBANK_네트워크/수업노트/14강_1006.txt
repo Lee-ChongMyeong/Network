@@ -1,0 +1,91 @@
+#문제풀이 - static routing 2
+en
+conf t
+enable password cisco
+no ip domain-lookup
+line con 0 
+slogg sy
+exec-t 0 0
+hostname R1
+
+R1
+192.168.10.254 255.255.255.0
+
+R2
+192.168.20.254 255.255.255.0 
+
+*loopback
+(config)#interface loopback 0
+do sh ip int b -> 밑에 loopback 논리적으로 하나의 interface가 만들어 진것처럼 됨 -> IP 만 넣으면 됨.
+#show ip route 로 확인 
+
+*dynamic 방식
+R1
+configure terminal
+router ?
+router rip
+network 10.10.1.0 (10. ~광고)
+network 192.168.10.0
+network 172.16.1.0 (R2와 연결된 인터페이스)
+
+show ru int
+network 10.0.0.0
+network 172.16.0.0
+network 192.168.10. 0 
+-> 우리가 넣은 숫자랑 다름. 클래스 단위로 입력 되기 때문에.
+
+$2
+router rip
+network 172.16.0.0
+?
+
+R3
+10.0.0.0
+172.16.0.0
+192.168.30.0 
+
+#sh ip protocol
+#sh ip route
+#show ip route connected -> 연결된 라우터만 확인
+
+#debug ip rip => 정상적으로 작용안할때 
+#no debug ip rip => 끌때 
+
+#clear ip rip *   ==> ??
+#clear ip ro *   ==> ??
+
+#no auto-summary
+서브넷 축약기능을 끈 상태로 자세한 정보로 보겠다.
+
+
+
+===============================
+#RIP.png 실습
+가용 IP를 첫번쨰 주소를 FR1
+그 다음 IP는 각각의 라우터에 부여. 
+
+R1, R2, R3, R4 구간은 
+첫번쨰 IP -> R1, R3 
+두번쨰 IP -> R2, R4
+
+R1, R4 loopback
+
+================================= 
+
+#숙제 CCNA Simulation
+
+->RC 라우터 말고는 설정못함.
+(다른 라우터 설정 안해도됨)
+
+*틀린부분
+
+console 0 
+password cisco2
+login
+
+vty 0 4
+password cisco3
+login
+router rip
+versfion2
+no auto-summary

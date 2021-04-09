@@ -1,0 +1,56 @@
+우리가 사용하는 공유기 -> 라우터, 스위치 합친모습. 
+
+☆Data encapsulation & De-encapsulation
+
+3계층 헤더 열수 있는 경우
+자기자신일때, 누가나 받아도 되는 데이터일떄(브로드케스터) -> 헤더 열 수 있다
+
+2계층, FOOTER = 오류 검출 용(하나의 데이터 확인용 정보) ex) 박스외관이 찌그러져 있는지 아닌지 확인 
+-> 전기적 신호가 정상적으로 수신됬는지를 FOOTER 가 담당
+
+===========================================================
+
+packet tracer -> option preferences -> always show port Labels 체크!
+				-> font 
+
+unshielded twisted pair(UTP) -> 우리가 사용하는 랜선
+shielded twisted pair(STP) 
+
+RJ-45 connector 
+
+Type of Ethernet (단어정리)
+Bandwidth : 대역폭 - 한번에 전달할 수 있는 데이터 전체량
+Duplex : half & full - plex(전기적 신호에 대한 내용)
+	simplex : 단방향 통신 -> TV, 라디오 
+	duplex : 양방향통신(half, full)
+	
+Serial DCE vs Serial DTE
+클럭을 주는쪽,  클럭을 받는쪽	
+	
+-라우터랑 pc연결할때 크로스로 연결 , 서버와 PC 연결할 떄 (설명서 봤을 때 포트의 핀 번호가 같아서) 
+같은장비 : 크로스 케이블
+다른장비 : 스트레이트 케이블
+
+S 0/0 ~  0/3
+슬롯번호 / 포트번호
+
+IOS = internetworking operating system 
+Console 접속 : 직접 
+원격접속 : 네트워크 통해 접속
+
+IOS 의 기본실행 모드 
+* User Mode
+Router >
+
+* privileged Mode
+-실제 실행 모드
+모든 명령어를 사용할 수 있다.
+다음과 같은 Prompt 를 제공
+ex) Router #
+
+
+=실습=
+패킷 트레이서. Router 전원 껐다 키기 -> CLI -> Yes -> ctrl + c -> enter -> user mode
+우리는 관리자이기 떄문에 User 모드 사용 안함
+
+컴퓨터랑 라우터 콘솔로 연결 -> desktop -> terminal -> ok (CLI 를 통한 접근)

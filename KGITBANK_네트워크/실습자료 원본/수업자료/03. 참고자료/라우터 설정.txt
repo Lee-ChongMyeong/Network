@@ -1,0 +1,42 @@
+1. 물리 토폴로지 설정
+2. 기본 설정
+enable
+configure terminal
+hostname R1
+enable secret cisco
+no ip domain-lookup
+username admin password cisco
+line console 0
+password cisco
+login
+exec-timeout 0 0
+logging synchronous
+line vty 0 4
+login local
+3. 인터페이스 설정
+R1>
+interface loopback 0
+ip address 1.1.1.1 255.255.255.0
+interface serial 0/0
+encapsulation hdlc (기본값)
+ip address 1.1.12.1 255.255.255.252
+bandwidth 1544(kbps) (기본값)
+clock rate 1300000 (1544000과 가장 가까운 값)
+no shutdown
+R2>
+interface loopback 0
+ip address 2.2.2.2 255.255.255.0
+interface serial 0/0
+ip address 1.1.12.2 255.255.255.252
+no shutdown
+4. 라우팅 설정
+R1>
+ip route 0.0.0.0 0.0.0.0 1.1.12.2
+or ip route 2.2.2.0 255.255.255.0 1.1.12.2
+R2>
+ip route 0.0.0.0 0.0.0.0 1.1.12.1
+or ip route 1.1.1.0 255.255.255.0 1.1.12.1
+5. 통신 확인
+R1# ping 2.2.2.2 => !!!!!
+R2# ping 1.1.1.1 => !!!!!
+R1# telnet 2.2.2.2 => Open

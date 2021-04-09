@@ -1,0 +1,28 @@
+<RIP>
+router rip
+network 10.0.0.0
+network 19.0.0.0
+version 2
+no auto-summary
+
+<EIGRP>
+router eigrp 1
+network 10.0.0.0
+network 19.0.0.0
+no auto-summay
+
+<OSPF>
+router ospf 1
+network 10.0.0.0 0.255.255.255 area 0
+network 19.0.0.0 0.255.255.255 area 0
+
+<Static> A router ±‚¡ÿ
+
+ip route 10.10.2.0 255.255.255.0 19.19.12.2
+ip route 19.19.2.0 255.255.255.0 19.19.12.2
+ip route 10.10.3.0 255.255.255.0 19.19.13.3
+ip route 19.19.3.0 255.255.255.0 19.19.13.3
+ip route 19.19.23.0 255.255.255.0 19.19.12.2
+ip route 19.19.23.0 255.255.255.0 19.19.13.3
+
+

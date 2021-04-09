@@ -1,0 +1,77 @@
+*CCNA_Simulation_EIGRP 과제 답안)
+
+-> 콘솔로 연결된 라우터가 4개이다.
+
+들어가서 확인해야되는 것
+-> show ip int br 확인하기.
+-> sho ip pro 정상적으로 올라왔는지 확인
+-> sho ip ei nei -> 확인하기
+-> sho ip rou -> 확인하기
+-> sho ip running-config - 확인하기
+
+R2
+show ip protocols 들어가보면
+eigrp 22 로 되어있음. 
+1. 22번을 그냥 둔 상태로 212번을 추가
+ -> 문제는 212번이 만들어지고 나면, 22번은 불필요한 커맨드가 되는 것임.  따라서, 시험의 기준으로 불필요한 커맨드를 삭제하는것이 메뉴얼임.
+2. no router eigrp 22 삭제
+-> router eigrp 212
+-> no auto-summary
+-> network 192.168.77.0
+-> network 192.168.66.0 추가
+
+그런데도 연결이 안되는것을 확인할 수 있음
+
+R1 들어가보면
+192.168.85.0 (192.168.77.0 으로 안들어가 있음)
+85점대 삭제, 77점대 추가하면됨.
+
+
+
+
+
+===================================
+*O(Open)SPF
+
+-OSPF는 IETF표준이다.
+-Shortest Path First(SPF)***알고리즘을 사용한다.
+-Link-state Routing Protocol
+-> 가장 많은 사용 빈도를 보임
+
+-OSPF는 Routing Tasble을 Update하지 않고 Link-state정보를 광고한다.
+-자신이 어느장비와 연결되어있는지를 나타내는지를 나타내는 정보 : state / Router interface = Link 
+
+
+cf) 우리가 앞서서 distance vector를 같은 방식으로 표현하면 KG 에듀원 종로3가에 있음. 지하철역으로 볼떄, 총 3개의 환승이 가능한 노선임. 역을 라우터로 보면, 종로3가역은 옆에 있는 역에 내 왼쪽에는 종로 5가가 있다. 오른쪽에는 종각역이있다. 이런 역과 역사이의 정보를 교환하게 되는 것임. 환승역이라고 비유를 든 이유는, 실제로 Distance Vector는 고장났다는 정보를 모르니깐 대기하는데, Link-state는 조금은 돌아가더라도 3호선이나 5호선 통해서 감. 
+
+*OSPF Hierarchical Routing
+-SPF 계산 빈도가 줄어든다.
+-Routing Table이 더 작다.
+-Link-State Update  과부하가 줄어든다.
+
+*Shortest Path First Algorithm
+-SFP 알고리즘에서는 Tree의 Root에 각 라우터를 두고 수신지에 도달하는데 필요한 누적 Cost를 기반으로 각 Node로 
+
+★Router ospf 명령어
+(config)# router ospf process-id (default : 1)
+
+(config-router) #network address wildcard-mask area area-id
+
+*wildcardmask : 네트워크 비트 검사 유/무를 가늠하기 위해 사용하는 주소.
+(무조건 넣어주어야 됨)
+
+0 : check => 반드시 동일한 값이 매칭되어야 함.
+1 : ignored => 어떤 값이 와도 무관. 
+
+10.0.0.0 255.0.0.0
+172.16.0.0 255.255.0.0
+192.168.1.0 255.255.255.0 
+
+10.0.0.0 0.255.255.255.
+172.16.0.0 0.0.255.255
+192.168.1.0 0.0.0.255
+1.1.1.1 0.0.0.0
+
+#show ip ospf interface : Area-ID와 Neighbor 인접성을 표시
+
+#show ip ospf neighbor

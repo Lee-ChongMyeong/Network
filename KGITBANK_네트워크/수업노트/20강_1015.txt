@@ -1,0 +1,66 @@
+*Simulation mode
+->ARP , ICMP 필터링
+
+스위치 1개에 , PC4개 연결
+1.1.1.1/1.1.1.2/1.1.1.3/1.1.1.4
+pc0 -> pc2 ping 1.1.1.3
+pc > arp -a 입력
+
+trouble shooting -> 각 pc마다 ipconfig 입력
+
+스위치 -> console cable -> PC0 연결
+PC0 ->  terminal -> ok
+스위치 접속 -> CLI 
+# conf run
+# show mac- : mac table 보는 명령어
+# clear mac-
+
+pc0 -> ping 1.1.1.3 입력  ARP는 이미 학습 되어있음 . 그래서 PACKET 1개만 보임
+CAPTURE FORWARD -> 데이터가 스위치로감
+
+
+스위치 # show mac- : 받은 내용을 스스로 학습하게됨(address running)
+CAPTURE FORWARD
+,이때 pc1, pc2는 2계층까지감(arp를 이미 가지고 있으므로, 출발지 ,목적지 가지고 있음, mac 주소를 가지고 있으므로. )
+
+capture forward -> switch 응답 (다시 학습 됨)
+# show mac- : address running 기능 
+
+CAPTURE FORWARD -> 이번에는 해당하는 PC0 쪽으로만 보냄
+
+*Simulation 껐다 키기 
+
+PC1 : ping 1.1.14
+#show mac- : address running  기능 
+목적지 모름 -> 플루딩 -> capture forward  -> pc0,pc2,pc3 응답
+ 
+우리가 사용하는 공유기가 스위치임
+-> 아무 설치 안해도 자동으로 쓸수 있는 원리임.(아주 쉽게 연결이됨)
+-> 라우터에 비해 매우 연결 됨, but 내부 동작이 스위치는 매우 까다로움
+
+PC0 : ping 1.255.255.255 (broadcast 주소) 입력
+수업간에 항상 말함 : broad는 항상 다 받아야됨
+
+-> CAPTURE FORWARD 눌러보면 PC들은 다 받음 (버리는것이 없음)
+-> CAPTURE FORWARD : 하나씩 다시 PC0에게 뿌림.
+스위치에서 브로드는 적절하게 제한되어야 한다.
+
+-들어온쪽을 제외한 나머지로 보내는 것 : Flooding
+
+1.mac-address learning : 스스로 테이블 학습
+2.flooding : 들어온쪽 나머지 모든 쪽으로 데이터 전달
+3.forwading : 해당쪽으로만 전달
+4.filtering : 그외 전달을 막음
+
+
+
+☆HUB
+**스위치는 HUB를 개선한 장비
+-HUB는 증폭기의 역할
+-DATA 주었다가 다시 다 회수, 충돌이 일어남.
+
+
+☆Redundant Topology ('불필요하다' 의미 : 쓸데없는)
+-> 존재하지만 왠만하면 사용하지 않았으면 좋겠어요 라는 의미
+
+☆STP 동작 과정

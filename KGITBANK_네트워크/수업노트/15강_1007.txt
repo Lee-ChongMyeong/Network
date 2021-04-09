@@ -1,0 +1,206 @@
+☆EIGRP SUPPORT
+
+*Network Topology 변화에 수렴시간이 빠르다
+*Multiple Routed Protocol(IP, IPX, Apple Talk)을 지원한다
+*EIGRP는 Auto Summary 및 Manual Summary를 지원한다
+*정상 운용 중에 적은 Network 지원을 이용해 Routing Table을 유 지한다.
+*Classless Routing Protocol 지원 
+
+RIP와 다른점.
+-> 아무하거나 정보를 교환하는게 아니라 자신과 정보를 교환할 대상과 관계형성을 한다.
+
+별도의 패킷 5개를 이용해 정보를 교환함
+*Hello(Neighbor Table)
+-Establish neighbor relationships
+-ACK 번호를 0을 가지고 multicast(224.0.0.10)
+
+*Update(Topology Table)
+-Send routing updates
+-New neighbor 발견시 topology table 동기화 : unicast
+-Topology Change 발견 시 : multicast 
+
+
+*Query(자신과 연결되어있는 상대방에게 정보 교환을 요청할때)
+-Ask neighbors about routing information : always multicast
+-요청메세지
+
+*Reply
+-Query 에 대한 응답 메세지
+(Query 랑 Reply 는 하나의 쌍, Query랑 Reply 갯수는 항상 같아야 한다.)
+-일정 시간까지 정보에 대한 응답이 안오면, 관계를 끊어버림
+-Response to query about routing informaton : unicast
+
+*ACK
+-Acknowledgement of a reliable packet (update, query, reply)
+-Nonzero ack 번호를 가진 unicast
+-실제 데이터를 교환하는 것에대해서만 ACK메시지를 통해 확인 응답을 한다. 
+=======================================
+*Neighbor Table(Hello)
+
+*Topology Table(Update해서 T.T에 보관)
+
+*Routing Table 
+(T->R) Dual 알고리즘 : 최적경로와 대체경로 선정. 
+
+*Successor
+-목적지에 대한 Primary Route. 
+-최적경로
+-Successor 경로가 Routing Table 에 올라간다.
+
+*Feasible Successor
+-대체 경로 
+
+*IP Routing Protocol을 위한 EIGRP 설정하기
+(config)# router eigrp autonomous-system
+
+*연결된 Network 설정하기 (Classful network Address를 할당한다.)
+(config-router)# network network-number
+
+*IP EIGRP Neighbor를 표시
+#show ip eigrp neighbors
+
+*IP EIGRP Topology를 표시
+#show ip eigrp topology
+
+*Routing Table에 EIGRP Route정보를 표시
+#show ip route eigrp
+
+*현재 Router에 구성된 Active Routing Protocol의 상세정보를 표시
+#show ip protocols
+
+#show ip eigrp traffic 
+
+1. default Route (0.0.0.0) ---> Stub Network
+2. Auto-summary ---> 수동 축약
+축약을 하는 이유 : 라우팅 테이블 줄이고, 네트워크를 원활하게 하기 위한 목적
+
+Question)
+
+1.1.1.0/24	00000001
+1.1.2.0/24	00000010
+1.1.3.0/24	00000011
+
+동일하게 사용되는 비트 묶으면 됨.
+
+Answer) 
+
+1.1.1.0/24	000000	01
+1.1.2.0/24	000000	10
+1.1.3.0/24	000000	11
+
+1.1.0.0/22
+
+======================================
+
+1.1.9.0/24		00001001
+1.1.10.0/24	00001010
+1.1.11.0/24	00001011
+
+1.1.0.0/22
+
+Answer)
+
+1.1.9.0/24	000010	01
+1.1.10.0/24	000010	10
+1.1.11.0/24	000010	11
+
+1.1.8.0/22
+=====================================
+
+Question)
+
+1.1.1.0/24		00000001
+1.1.2.0/24		00000010
+1.1.3.0/24		00000011
+1.1.9.0/24		00001001
+1.1.10.0/24	00001010
+1.1.11.0/24	00001011
+
+1.1.0.0/20
+
+--> 수동으로 축약되는 방법. Supernetting이다.
+========================================
+Question) 쉽게하는 방법
+1.1.10.0/24
+1.1.20.0/24
+1.1.30.0/24
+
+가장 큰값에서 가장 작은 값 뺌 : 30 - 10 = 20 -> 2^5 = 32(0~31)
+
+1.1.0.0 / 19
+======================================
+1.1.20.0/24
+1.1.30.0/24
+1.1.40.0/24
+
+20 => 2^5 = 32(0~31) -> 40은 안들어감.
+          2^6 = 64(0~63)
+
+1.1.0.0/18
+
+======================================
+1.1.40.0/24
+1.1.50.0/24
+1.1.60.0/24
+
+1.1.32.0/19
+
+숙제)EIGRP-001
+
+-루프백 4개 만들어야됨.
+-광고하는쪽 축약해서 인터페이스에서 묶어야됨
+
+ip summary address eigrp 1 <network> <subnetmask>
+-> R11 (serial 0/0, serial 0/1) 둘다 축약해줘야됨
+-> R13 (serial 0/0, serial 0/1) 둘다 축약해줘야됨
+
+첫번쨰 주소 :FR1
+
+두번쨰 주소 : 각각라우터
+
+첫번쨰 주소 : 홀수번
+두번째 주소 : 짝수번
+
+
+172.16.0.0
+172.16.0000 0001. 0
+172.16.0000 0010. 0
+172.16.0000 0011. 0
+
+172.16.0.0/22
+----------------------------------
+172.16.0000 0100. 0
+172.16.0000 0101.0
+172.16.0000 0110.0
+172.16.0000 0111.0
+
+172.16.4.0 / 21
+
+
+---------------------------------
+☆EIGRP (과제2)
+
+100.1.1.0/24
+100.1.2.0/24
+100.1.3.0/24
+100.1.4.0/24
+=> 축약값 
+: 100.1.0.0 /21
+
+100.1.133.0/24
+100.1.144.0/24
+100.1.155.0/24
+100.1.166.0/24
+100.1.177.0/24
+=> 축약값
+: 100.1.128.0/18
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,165 @@
+패킷트레이서 -> 라우터 -> CLI -> CTRL + C
+
+관리자 모드 : #
+유저 모드 : > 
+
+관리자 모드 
+ROUTER > enable
+
+유저모드로 가는 방법
+disable 입력
+en? -> tab 누르면 자동으로 완성됨  / dis -> tab : 안됨 왜냐하면 두가지 명령어가 있기 떄문에 
+enable 
+
+명령어는 버퍼에 저장 -> 방향키 위아래로 움직이면 사용했던 명령어 볼 수 있음.
+
+*불완전한 명령어 입력 시
+ex) con -> Ambiguous command : "con"
+
+*오타로 인한 명령어 잘못 입력시 오루 
+con f v -> enter 쳐서 나가면 됨. 
+        ^
+
+*현재 모드에 존재하지 않는 명령 입력 오류
+% Incomplete command
+
+- IP 넣는 방법
+#ip address 192.168.50.51 255.255.255.0
+
+
+- IP 삭제 방법
+# No ip address 192.168.50.51 255.255.255.0
+
+ctrl + a : 커서가 맨 앞으로 
+ctrl + e : 커서가 맨 마지막
+
+-show history : 버퍼 메모리에 있는 정보 확인, 명령어 쓴 것들 볼수 있  (제일 많이 사용하게 됨) 
+
+ROM : 읽기 기능, 비휘발성 (부팅관련 정보 보관할때 사용) 
+RAM : 읽기 기능 + 쓰기 기능, 휘발성 (임시정보 보관 ex) pc등이 꺼지면 메모리의 정보가 삭제됨)
+	-설정을 하는 모든 정보는 RAM 에 저장된다.
+NVRAM : 읽기 기능 + 쓰기 기능, 비휘발성(설정 정보 보관) - RAM의 기능을 개선
+
+
+관리자 모드 -> configure terminal -> enter
+	   -> #hostname R1 (Router 이름 지정) 
+
+램 정보 확인 : R1 #show running-config -> 무조건 관리자 모드에서
+		#exit -> #show running-config
+
+*장비 이름 설정
+Router -> enable
+Router# configure terminal
+ROuter(config) # hostname R1
+
+
+*Banner MOTD 설정
+#banner motd # Welcome To Network World#  -> 램에 저장
+
+-> #exit -> #show running-config : Banner MOTD 설정
+
+*인터페이스 설정 내용 확인하기	
+R1# show up interface brief
+
+R1# configure terminal -> #interface fastEthernet 0/0 -> #description # To Network Line #
+-> exit -> exit -> show running-config
+
+#end : 무조건 관리자 모드로 한번에 빠져나감
+#exit : 전 모드로 하나씩 단계를 거쳐 나감.
+
+#login : 패스워드 설정하는 명령어 (password 입력후 마무리 해야됨)
+
+
+*Console password
+Router(conf)#line console 0
+Router(conf-line) #password cisco
+Router(conf-line) #login
+
+*Virtual Terminal password
+enable password cisco
+-> show running-config(Ram 정보 확인)
+
+*Secret password : 보안성 높음, 우리들의 암호를 암호화시킴
+R1(config) #enable secret test
+
+*암호 삭제
+#configure terminal 
+#no enable password cisco (x) no enable password
+
+*Console Session Time 설정
+Router(conf)#line console 0 
+Router(conf-line) #exec-timeout 0 0 -> 장비 설정할떄는 Session TIme 무조건 해야됨
+
+#password cisco
+#logging synchoronous
+
+
+*Domain 접근 뜰 때, Translating domain server (255.255.255.255) 삭제방법
+
+configure terminal 
+R1(config) #no ip domain-lookup
+
+or ctrl + shift + 6 : 빠져나올수 있음
+
+*Console Input Message 동기화 설정
+
+%SYS-5-CONFIG I : COnfigured from console by console : log 메세지 (누가 언제 어디서 로그인 했다는 의미)
+-> 이 메세지를 동기화 하기 위해서
+
+show running-config
+
+*Console 인증 설정
+configure terminal 
+Router(conf) #Username Student Password Korea (계정 만들기)
+Router(conf) #line console 0
+Router(conf-line)#login local (계정이 반드시 필요함)
+
+-> Ram 확인 : show running-config
+
+username : no user name -> 지우게 됨
+
+☆5개 기본 설정
+hostname
+enable password
+no ip domain-lookup
+line console 0
+exec-timeout 0 0
+logging synchronous
+=======================================================================
+interface Configuration 기본단계
+
+*2-계층 protocol 설정하기
+Router(conf) #interface serial 0/1
+Router(conf-if) #encapsulation ppp
+
+*address 설정하기
+Router(con-if) #ip address 10.1.1.1 255.255.255.0
+
+*Bandwidth 설정하기
+Router(conf-if)#bandwidth 64
+
+기본값 : bandwith 1544
+
+*Clock 설정하기 (DCE Interface 에서 설정)
+Router(conf-if) #clock rate 64000 
+
+(config-if) clock rate 
+show interface serial 0/0 
+-> BW1544 kbit 
+(config-if) clock rate ? -> clock rate 보기
+
+*interface 동작시키기 (명령어)
+Router(con-if) #no shutdown
+
+			(carrier Detect)    Keepalives
+Operational		serial1 is up, line protocol is up
+Connection problem	serial1 is up, line protocol is down -> down 이 뜨면 다른 연결방식 쓰는지 확인하기
+Interface problem		serial1 is down, line protocol is down
+			-> no shutdown 여부 확인, encapsulation Type 확인, DCE에서 CLock rate 제공 여부 확인 
+Disabled			serial1 is administratively down, line protocol is down
+
+연결 테스트 : Ping test 
+
+show ip interface brief -> manual up으로 되어있는지 확인
+
+11580000

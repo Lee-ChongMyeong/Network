@@ -1,0 +1,73 @@
+
+
+*Dynamic Routing
+-> 네트워크 정보를 교환하여 최적의 경로를 결정하고, 라우팅 테이블을 지속적으로 유지한다. (자동)
+
+★Dynamic Routing 개요
+
+*Unicast Routing
+-IGP(AS내에서)
+-EGP(AS사이에서)
+
+*Multicast Routing(생략)
+
+-Autonomous System(AS) 일반적인 관리 영역하에 있는 네트워크 들의 집합
+
+-IGP 들은 AS 안에서 운영
+-EGP 들은 다른 AS 밖에서 운영
+
+AD : 하나이상의 라우팅 프로토콜에 의해 학습된 경로중 어느경로를 더욱 신뢰할 것인지를 나타내는 값(낮을수록 우선순위가 높다)
+
+	Internal		External
+static	   1		    1
+eigrp	   90	  	    170
+ospf	   110		    110
+rip	   120		    120
+bgp	   200		     20
+
+=> 관리자가 수동으로 선택하는 경로가 우선순위가 높다.
+===================================================
+
+라우팅 우선순위
+1. Routing Table(수동/자동) -> 수동인지 자동인지 우리가 선택 가능
+2. AD 값으로 프로토콜 우선순위 판단.(낮을수록 우선순위가 높다, AD값 같을 수도 있다.)
+   프로토콜 우선순위 판단 후, 
+    Metric (목적지 네트워크까지의 기준에 의해 계산된 경로 비용 값) 값을 이용해 판단.
+    => 프로토콜이 같아야되는 전제. (ex, EIGRP , RIP)
+    - Hop : Router의 수 / Metric 값이 낮을수록 비용이 적다.
+    Metric 값이 같으면 어디든 가도 됨.
+
+3. Longest Match Rule (목적지 네트워크와 가장 많이 네트워크 ID가 매칭되는 쪽으로 전달하는 규칙)
+
+☆Distance Vector Routing
+-최적의 라우팅 리스트를 만든 후, 주기적으로 라우팅 테이블을 인접관계에 있는 라우터에게 전달.
+
+*RIP의 개요
+-Hop COunt를 Metric으로 사용하여 최적 경로 선택
+-매 30초마다 Routing update를 내보냄
+
+*IP Routing Protocol을 정의
+(config)#router protocol(=rip)
+
+*각각의 IP Routing Process에 반드시 설정해야 하는 명령어
+-자신이 가진 Network를 알리고, 이 Network 에서 파생된 IP Address가 할당된 Interface로 Routing 정보를 전송
+-network 명령을 통해서 상대방에게 정보를 알려줄 때 쓴다.
+
+(config-router)#network 192.168.1.0 = A,B connected된 경로. 			
+(config-router)#10.0.0.0
+
+*Tip : 자신과 가지고 있는 Connected 경로를 전달.
+
+#show ip protocols : 현재 동작중인 protocol 정보 확인 
+#show ip route : 라우팅 테이블 보는법
+#clear ip route * : 즉시 경로를 학습하고 싶을떄, 라우팅 테이블 초기화. 
+#debug ip rip : 데이터가 정상적으로 송수신됬는지 확인
+#no debug ip rip : 디버그 끌때. 
+
+#RIP 설정
+
+R1 
+(config)#router rip
+#network 192.168.1.0
+#network 192.168.2.0
+
